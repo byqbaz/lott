@@ -3,15 +3,15 @@
 
  Source Server         : 本地
  Source Server Type    : MySQL
- Source Server Version : 50554
+ Source Server Version : 50529
  Source Host           : localhost:3306
  Source Schema         : lott
 
  Target Server Type    : MySQL
- Target Server Version : 50554
+ Target Server Version : 50529
  File Encoding         : 65001
 
- Date: 10/05/2021 17:25:32
+ Date: 13/05/2021 23:09:55
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,8 @@ CREATE TABLE `person_fucai`  (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0未删除1已删除',
   `create_time` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`fc_id`) USING BTREE
+  PRIMARY KEY (`fc_id`) USING BTREE,
+  UNIQUE INDEX `彩票期号`(`day_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
