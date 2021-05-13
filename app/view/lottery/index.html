@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lottery</title>
+    <!--引入本地-->
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/js/jquery-3.5.1.min.js"></script>
+    <script src="/static/js/echarts/echarts.min.js"></script>
+    <!--引入线上-->
+    <!--<link rel="stylesheet" href="//unpkg.com/layui@2.6.5/dist/css/layui.css">-->
+    <!--<script src="//unpkg.com/layui@2.6.5/dist/layui.js"></script>-->
+    <!--<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">1</div>
+    <div class="layui-card-body">
+        <div class="layui-collapse" layui-show>
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">李白</h2>
+                <div class="layui-colla-content">
+                    <span class="layui-badge" id="fc1">6</span>
+                    <span class="layui-badge" id="fc2">6</span>
+                    <span class="layui-badge" id="fc3">6</span>
+                    <span class="layui-badge" id="fc4">6</span>
+                    <span class="layui-badge" id="fc5">6</span>
+                    <span class="layui-badge" id="fc6">6</span>
+                    <span class="layui-badge layui-bg-blue"  id="fc7">6</span>
+                    <button type="button" id="fc" name="generate_fc" class="lott layui-btn layui-btn-radius layui-btn-normal">生成</button>
+                    <a href="{:url('Lottery/trend_chart')}?type=f" class="layui-btn">走势图</a>
+                </div>
+            </div>
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">杜甫</h2>
+                <div class="layui-colla-content">
+                    <div class="layui-colla-content layui-show">
+                        <span class="layui-badge" id="tc1">6</span>
+                        <span class="layui-badge" id="tc2">6</span>
+                        <span class="layui-badge" id="tc3">6</span>
+                        <span class="layui-badge" id="tc4">6</span>
+                        <span class="layui-badge" id="tc5">6</span>
+                        <span class="layui-badge layui-bg-blue" id="tc6">6</span>
+                        <span class="layui-badge layui-bg-blue" id="tc7">6</span>
+                        <button type="button" id="tc" name="generate_tc" class="lott layui-btn layui-btn-radius layui-btn-normal">生成</button>
+                        <a href="{:url('Lottery/trend_chart')}?type=t" class="layui-btn">走势图</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //注意：折叠面板 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+    $('.lott').click(function(){
+      var url = $(this).attr("name");
+        console.log(url);
+//      var res = $("#fc").prop("name");
+        $.ajax({
+            type: "POST",
+            url: "{:url('"+url+"')}",
+            data: {name:url},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                if(jsonObj.type==1){
+                    $('#fc1').text(jsonObj.red[0]);
+                    $('#fc2').text(jsonObj.red[1]);
+                    $('#fc3').text(jsonObj.red[2]);
+                    $('#fc4').text(jsonObj.red[3]);
+                    $('#fc5').text(jsonObj.red[4]);
+                    $('#fc6').text(jsonObj.red[5]);
+                    $('#fc7').text(jsonObj.blue);
+//                    console.log(jsonObj);
+//                    console.log(jsonObj.red);
+//                    console.log(jsonObj.red[0]);
+                }else{
+                    $('#tc1').text(jsonObj.red[0]);
+                    $('#tc2').text(jsonObj.red[1]);
+                    $('#tc3').text(jsonObj.red[2]);
+                    $('#tc4').text(jsonObj.red[3]);
+                    $('#tc5').text(jsonObj.red[4]);
+                    $('#tc6').text(jsonObj.blue[0]);
+                    $('#tc7').text(jsonObj.blue[1]);
+                }
+
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

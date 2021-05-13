@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--引入本地-->
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+
+</head>
+<body>
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">近期出现次数较多的</button>
+            <div style="padding: 30px;">
+                <button type="button" id="red1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red3" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red4" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red5" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                {if $type === 'f'}
+                <button type="button" id="red6" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="blue" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {elseif $type === 't'}
+                <button type="button" id="blue1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="blue2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {/if}
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">近期推荐</button>
+            <div style="padding: 30px;">
+                <button type="button" id="red11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red13" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red14" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red15" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                {if $type === 'f'}
+                <button type="button" id="red16" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="blue10" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {elseif $type === 't'}
+                <button type="button" id="blue11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="blue12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="type" id="type_result"  value="{$type}">
+</div>
+<table class="layui-table" lay-data="{ url:'/Lottery/trend_chart_data.html?id={$type|default=0}', page:true, id:'test2', skin: 'row', even: true, parseData: function(res){ //res 即为原始返回的数据
+                var res=$.parseJSON(res);
+                <!--console.log(res.data);-->
+                return {
+                    'code':0, //解析接口状态
+                    'msg':'', //解析提示文本
+                    'count': 200, //解析数据长度
+                    'data': res.data//解析数据列表
+                };
+}}">
+    <thead>
+    <tr>
+        <th lay-data="{ width:80, sort: true,templet: '#xuhao'}">序号</th>
+        <th lay-data="{field:'day_code', width:150, templet: '#usernameTpl'}">期号</th>
+        <th lay-data="{field:'red1', width:120,style:'background-color: #FA8072; ',}">1</th>
+        <th lay-data="{field:'red2', width:120,style:'background-color: #FA8072; ',}">2</th>
+        <th lay-data="{field:'red3', width:120,style:'background-color: #FA8072; ',}">3</th>
+        <th lay-data="{field:'red4', width:120,style:'background-color: #FA8072; ',}">4</th>
+        <th lay-data="{field:'red5', width:120,style:'background-color: #FA8072; ',}">5</th>
+        {if $type === 'f'}
+        <th lay-data="{field:'red6', width:120,style:'background-color: #FA8072; ',}">6</th>
+        <th lay-data="{field:'blue', width:120,style:'background-color: #40E0D0; ',}">7</th>
+        {elseif $type === 't'}
+        <th lay-data="{field:'blue1', width:120,style:'background-color: #40E0D0; ',}">6</th>
+        <th lay-data="{field:'blue2', width:120,style:'background-color: #40E0D0; ',}">7</th>
+        {/if}
+
+        <th lay-data="{field:'type', width:80，templet: '#isType'}">类型</th>
+        <th lay-data="{field:'update_time'}">创建时间</th>
+        <th lay-data="{field:'is_deleted', width:80, sort: true, style:'background-color: #eee;',templet: '#is_deleted'}">状态</th>
+        <!--<th lay-data="{field:'score', width:80, sort: true}">操作</th>-->
+    </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="usernameTpl">
+    <a href="/?table-demo-id={{d.id}}" class="layui-table-link" target="_blank">{{ d.day_code }}</a>
+</script>
+
+<script type="text/html" id="is_deleted">
+    {{#  if(d.is_deleted === 0){ }}
+    <span style="color: #009688;">正常</span>
+    {{#  } else { }}
+    <span style="color: #F581B1;">异常</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="isType">
+    {{#  if(d.is_deleted === 0){ }}
+    <span style="color: #009688;">正常</span>
+    {{#  } else { }}
+    <span style="color: #F581B1;">异常</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="xuhao">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+
+<script type="text/html" id="barDemo1">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">工具性按钮</a>
+</script>
+
+
+<script src="/static/js/jquery-3.5.1.min.js"></script>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+    });
+
+    $(document).ready(function(){
+        var res = $('#type_result').val();
+//        console.log(res);
+        $.ajax({
+            type: "POST",
+            url: "{:url('Lottery/trend_chart_result')}",
+            data: {res:res},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#red1').text(jsonObj.red1);
+                $('#red2').text(jsonObj.red2);
+                $('#red3').text(jsonObj.red3);
+                $('#red4').text(jsonObj.red4);
+                $('#red5').text(jsonObj.red5);
+                $('#red6').text(jsonObj.red6);
+                $('#blue').text(jsonObj.blue);
+                $('#blue1').text(jsonObj.blue1);
+                $('#blue2').text(jsonObj.blue2);
+
+            }
+        });
+    });
+</script>
+<script>
+
+    $(document).ready(function(){
+        var res = $('#type_result').val();
+//        console.log(res);
+        $.ajax({
+            type: "POST",
+            url: "{:url('Lottery/trend_chart_result')}",
+            data: {res:res},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#red1').text(jsonObj.red1);
+                $('#red2').text(jsonObj.red2);
+                $('#red3').text(jsonObj.red3);
+                $('#red4').text(jsonObj.red4);
+                $('#red5').text(jsonObj.red5);
+                $('#red6').text(jsonObj.red6);
+                $('#blue').text(jsonObj.blue);
+                $('#blue1').text(jsonObj.blue1);
+                $('#blue2').text(jsonObj.blue2);
+
+            }
+        });
+    });
+</script>
+</body>
+</html>
