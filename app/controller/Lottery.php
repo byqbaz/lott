@@ -20,11 +20,13 @@ class Lottery extends BaseController
     protected $fc='fucai';
     protected $tc='ticai';
 
+    public $title='随机生成';
     /**
      * @return string
      * 生成彩票页
      */
     public function index(){
+        View::assign('title',empty($title)?$this->title:$title);
         return View::fetch('index');
     }
 
@@ -162,15 +164,8 @@ class Lottery extends BaseController
      * 彩票浏览页面
      */
     public function trend_chart(){
-         if($this->request->get('type')==='f'){
 
-             View::assign('type', $this->request->get('type'));
-         }elseif($this->request->get('type')==='t'){
-
-             View::assign('type', $this->request->get('type'));
-         }else{
-             View::assign('type', $this->request->get('type'));
-         }
+        View::assign('type', $this->request->get('type'));
         return View::fetch();
     }
 
@@ -180,6 +175,7 @@ class Lottery extends BaseController
      */
     public function trend_chart_data(){
         $where['is_deleted']=0;
+        $where['type']=1;
         if($this->request->get('id')==='f') {
             $fc = Db::name($this->fc)->where($where)->order('fc_id desc')->limit(100)->select();
             return '{"code":0,"msg":"","count":1000,"data":' . json_encode($fc,true) . '}';
@@ -187,7 +183,7 @@ class Lottery extends BaseController
             $tc = Db::name($this->tc)->where($where)->order('tc_id desc')->limit(100)->select();
             return '{"code":0,"msg":"","count":1000,"data":' . json_encode($tc) . '}';
         }else{
-            return '{"code":0,"msg":"","count":1000,"data":[{"id":10000,"username":"user-0","sex":"女","city":"城市-0","sign":"签名-0","experience":255,"logins":24,"wealth":82830700,"classify":"作家","score":57},{"id":10001,"username":"user-1","sex":"男","city":"城市-1","sign":"签名-1","experience":884,"logins":58,"wealth":64928690,"classify":"词人","score":27},{"id":10002,"username":"user-2","sex":"女","city":"城市-2","sign":"签名-2","experience":650,"logins":77,"wealth":6298078,"classify":"酱油","score":31},{"id":10003,"username":"user-3","sex":"女","city":"城市-3","sign":"签名-3","experience":362,"logins":157,"wealth":37117017,"classify":"诗人","score":68},{"id":10004,"username":"user-4","sex":"男","city":"城市-4","sign":"签名-4","experience":807,"logins":51,"wealth":76263262,"classify":"作家","score":6},{"id":10005,"username":"user-5","sex":"女","city":"城市-5","sign":"签名-5","experience":173,"logins":68,"wealth":60344147,"classify":"作家","score":87},{"id":10006,"username":"user-6","sex":"女","city":"城市-6","sign":"签名-6","experience":982,"logins":37,"wealth":57768166,"classify":"作家","score":34},{"id":10007,"username":"user-7","sex":"男","city":"城市-7","sign":"签名-7","experience":727,"logins":150,"wealth":82030578,"classify":"作家","score":28},{"id":10008,"username":"user-8","sex":"男","city":"城市-8","sign":"签名-8","experience":951,"logins":133,"wealth":16503371,"classify":"词人","score":14},{"id":10009,"username":"user-9","sex":"女","city":"城市-9","sign":"签名-9","experience":484,"logins":25,"wealth":86801934,"classify":"词人","score":75}]}';
+            return '{"code":0,"msg":"","count":1000,"data":[{}]}';
         }
 
     }
@@ -199,6 +195,7 @@ class Lottery extends BaseController
     public function trend_chart_result(){
         if($this->request->isPost()){
             $where['is_deleted']=0;
+            $where['type']=1;
              if($this->request->post('res')=='f'){
 //                 $fc = Db::name($this->fc)->where($where)->order('fc_id desc')->limit(100)->column('red2');
                  $fc = Db::name($this->fc)->where($where)->field('red1,red2,red3,red4,red5,red6,blue')->order('fc_id desc')->limit(100)->select();
@@ -224,9 +221,9 @@ class Lottery extends BaseController
                  $arr['type']=$this->request->post('res');
                  return json_encode($arr);
              }elseif($this->request->post('res')=='t'){
-                 $fc = Db::name($this->tc)->where($where)->field('red1,red2,red3,red4,red5,blue1,blue2')->order('tc_id desc')->limit(100)->select();
+                 $tc = Db::name($this->tc)->where($where)->field('red1,red2,red3,red4,red5,blue1,blue2')->order('tc_id desc')->limit(100)->select();
                  $arr=[];
-                 foreach($fc as $key=>$val){
+                 foreach($tc as $key=>$val){
                      $red1[]=$val['red1'];
                      $red2[]=$val['red2'];
                      $red3[]=$val['red3'];
@@ -245,9 +242,12 @@ class Lottery extends BaseController
                  $arr['blue1']=$this->trend_chart_result_data($blue1);
                  $arr['blue2']=$this->trend_chart_result_data($blue2);
                  $arr['type']=$this->request->post('res');
+//                 return $this->trend_chart_result_data($red1);
                  return json_encode($arr);
              }
 
+        }else{
+            echo 1;
         }
     }
 
@@ -255,18 +255,21 @@ class Lottery extends BaseController
      * @param $data
      * @param bool $type
      * @return array|bool
-     * 获取
+     * 获取出现次数最多的数
      */
     protected function trend_chart_result_data($data,$type=false){
         if(!is_array($data)) return false;
         $data = array_count_values($data);
         arsort($data);
-        $data=each($data) ;
+//        $data = key($data);
+//        $data=each($data) ;
         if($type===true){
-            return $data;
+            $res['value '] = current($data);
+            $res['key'] = key($data);
         }else{
-            return $data['key'];
+            $res= key($data);
         }
+        return $res;
     }
 
     public function trend_chart_res(){

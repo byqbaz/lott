@@ -7,12 +7,19 @@ use think\facade\Db;
 
 class Index extends BaseController
 {
+    /**
+     * @return string
+     * 首页
+     */
     public function index()
     {
 
         return View::fetch('index');
     }
 
+    /**
+     * 测试专用方法
+     */
     protected function _index_res(){
         $num=rand(1,2);
         switch($num) {
@@ -70,7 +77,7 @@ class Index extends BaseController
 
     /**
      * @return array
-     * 福彩
+     * 福彩双色球
      */
     protected function generate_fc(){
         $arr = array();
@@ -102,7 +109,7 @@ class Index extends BaseController
     /**
      * @param $num
      * @return mixed
-     * 体彩
+     * 体彩大乐透
      */
 
     protected function generate_tc(){
