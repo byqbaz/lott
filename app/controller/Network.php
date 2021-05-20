@@ -40,75 +40,42 @@ class Network extends BaseController
         $title='测试采集接口';
         $type=$this->request->get('type');
         if($type==1){
-            $url='http://kaijiang.500.com/shtml/dlt/21053.shtml';
-            $data[] = QueryList::get($url)->find('body')->html();
-            halt($data);
-//        $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(1) > td > span > a')->text();
-//        $data= preg_replace('/\D/s', '', $data[0]);
-//        print_r($data[0]);
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(2)')->html();
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(3)')->html();
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(4)')->html();
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(5)')->html();
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(6)')->html();
-            $data[] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(7)')->html();
-        }elseif($type==2){
             $url='http://kaijiang.500.com/shtml/ssq/21053.shtml';
             $data = $this->GetCurl($url);
-
-            $data = iconv('ASCII','latin1//IGNORE',$data);
-//            $data=substr($data,strpos($data,'<li class="ball_red">'),260);
-
-//            $encode =mb_detect_encoding($data, array('ASCII','UTF-8','GB2312','GBK','BIG5'));
-
-            $encode =mb_detect_encoding($data, array('ASCII','UTF-8','GB2312','GBK','BIG5'));
-//            if($encode=='CP936'){
-//                $data=substr($data,strpos($data,'<li class="ball_red">'),260);
-//            }
-//            $red1=substr($data,strpos($data,'<li class="ball_red">'),3);
-            $data2=substr($data,strpos($data,'<li class="ball_red">'),260);
-            if($encode=='ASCII'){
-                $num=preg_replace('/\D/s', '', $data2);
-                $red1=substr($num,0,2);
-                $red2=substr($num,2,2);
-                $red3=substr($num,4,2);
-                $red4=substr($num,6,2);
-                $red5=substr($num,8,2);
-                $red6=substr($num,10,2);
-                $red7=substr($num,12,2);
-                echo $red1;
-                echo "_";
-                echo $red2;
-                echo "_";
-                echo $red3;
-                echo "_";
-                echo $red4;
-                echo "_";
-                echo $red5;
-                echo "_";
-                echo $red6;
-                echo "_";
-                echo $red7;
-//                echo "_";
-            }elseif($encode=='UTF-8'){
-//                $data2=iconv("UTF-8", "GB2312", "$data2");
-                $data2=iconv("GB2312", "UTF-8", "$data2");
-                echo $data2;
-                $encode =mb_detect_encoding($data2, array('ASCII','UTF-8','GB2312','GBK','BIG5'));
-                echo "_";
-                echo $encode;
-            }
-
-
-//            echo "<pre>";
-//            echo $encode;
-//            echo "<br>";
-//            echo $num;
-//            echo '\t';
-//            echo rand(10,99);
+            $url_api='https://match.lottery.sina.com.cn/client/index/clientProxy/?format=json&__caller__=wap&__version__=1&__verno__=1&cat1=gameCurrentInfo&gameCode=101&issueNo=2021050&t=1621496272586';
+//            $data = $this->GetCurl($url_api);
+            $html = iconv('GBK','UTF-8',$data);
+            $ql = QueryList::html($html)->rules('')->encoding('UTF-8','GB2312')->query()->getData();
+            halt($ql);
+//            $url='http://kaijiang.500.com/shtml/dlt/21056.shtml';
+            $data['red1'] = QueryList::get($url_api)->find('body')->html();
+//            $data['red1'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(1)')->html();
+//            $data['red2'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(2)')->html();
+//            $data['red3'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(3)')->html();
+//            $data['red4'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(4)')->html();
+//            $data['red5'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(5)')->html();
+//            $data['red6'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(6)')->html();
+//            $data['blue'] = QueryList::get($url)->find('#kj_opencode > li:nth-child(7)')->html();
+//            $day_code = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(1) > td > span > a')->text();
+//            $data['day_code']= preg_replace('/\D/s', '', $day_code);
+//            $data['create_time']= time();
+//            return Db::name($this->tc)->insert($data);
+//            body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(1) > td:nth-child(2)
+            halt($data);
+        }elseif($type==2){
+            $url='https://zx.500.com/ssq/';
+            $url='https://datachart.500.com/ssq/history/newinc/history.php?start=21001&end=21054';
+            $data['red1'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(2)')->html();
+            $data['red2'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(3)')->html();
+            $data['red3'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(4)')->html();
+            $data['red4'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(5)')->html();
+            $data['red5'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(6)')->html();
+            $data['red6'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(7)')->html();
+            $data['blue'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(8)')->html();
+            halt($data);
 
             echo "_";
-            echo $encode;
+//            echo $encode;#tdata > tr:nth-child(1) > td:nth-child(2)
             exit;
         }
 
@@ -187,7 +154,7 @@ class Network extends BaseController
             $num=$year.'0';
             for($i=1;$i<=53;$i++){
                 if($i<10)$i='0'.$i;
-                $url1=$url.'dlt/'.$num.$i.'.shtml?0_ala_baidu';
+                $url1=$url.'dlt/'.$num.$i.'.shtml';
                 $data['red1'] = QueryList::get($url1)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(1)')->html();
                 $data['red2'] = QueryList::get($url1)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(2)')->html();
                 $data['red3'] = QueryList::get($url1)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(3)')->html();
@@ -220,44 +187,73 @@ class Network extends BaseController
         $year=date('y');
         if($this->request->get('type')=='f') {
             $data = Db::name($this->fc)->where($where)->order('day_code desc')->find();
-            $res=[];
-            $count=0;
+            $str='red1,red2,red3,red4,red5,red6';
+            $red=Db::name($this->fc)->field($str)->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'365'))->select();
+
+            $blue=Db::name($this->fc)->field('blue')->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'365'))->select();
+
+            $count=count($red);
+            $red=$this->newest_key_value($red,'red');
+            $blue=$this->newest_key_value($blue,'blue');
+//            halt($blue);
         }elseif($this->request->get('type')=='t'){
-            $tc=Db::name($this->tc);
-            $data = $tc->where($where)->order('day_code desc')->find();
+            $data = Db::name($this->tc)->where($where)->order('day_code desc')->find();
             $str='red1,red2,red3,red4,red5';
-            $res=$tc->field($str)->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->select();
-            $result = [];
-            $count=count($res);
-            array_walk_recursive($res, function($value) use (&$result) {
-                array_push($result, $value);
-            });
-            $res=array_count_values($result);
-//            arsort($res);
-            ksort($res);
-            $num=count($res);
-            $res_key=array_keys($res);
-            $res_val=array_values($res);
-//            halt(json_encode($res_val));
-            View::assign('res_key',json_encode($res_key));
-            View::assign('res_val',json_encode($res_val));
-//            View::assign('res_key',$res_key);
+            $red=Db::name($this->tc)->field($str)->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'365'))->select();
+            $blue=Db::name($this->tc)->field('blue1,blue2')->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'365'))->select();
+            $count=count($red);
+            $red=$this->newest_key_value($red,'red');
+            $blue=$this->newest_key_value($blue,'blue');
         }else{
             $data=[];
-            $res=[];
+            $red=[];
+            $blue=[];
             $count=0;
         }
 
-        if(empty($data)) exit;
-        if(empty($res)) exit;
+//        if(empty($data)) exit;
+//        if(empty($red)) exit;
 //        halt(2);
         View::assign('data',$data);
-        View::assign('res',$res);
+//        View::assign('red',$red['red']);
+//        View::assign('blue',$blue['blue']);
+        View::assign('red_key',json_encode($red['red_key']));
+        View::assign('red_val',json_encode($red['red_val']));
+        View::assign('blue_key',json_encode($blue['blue_key']));
+        View::assign('blue_val',json_encode($blue['blue_val']));
         View::assign('count',$count);
-        View::assign('num',$num);
         View::assign('title',empty($title)?$this->title:$title);
         View::assign('type', $this->request->get('type'));
         return View::fetch();
+    }
+
+    /**
+     * @param $data
+     * @param $type
+     * @return mixed
+     * 处理数据键值对分离
+     */
+    protected function newest_key_value($data,$type){
+        $result = [];
+
+        array_walk_recursive($data, function($value) use (&$result) {
+            array_push($result, $value);
+        });
+        $arr=array_count_values($result);
+        ksort($arr);
+        $arr_key=array_keys($arr);
+        $arr_val=array_values($arr);
+        if($type=='red'){
+            $res['red']=$arr;
+            $res['red_key']=$arr_key;
+            $res['red_val']=$arr_val;
+        }else{
+            $res['blue']=$arr;
+            $res['blue_key']=$arr_key;
+            $res['blue_val']=$arr_val;
+        }
+
+        return $res;
     }
 
     /**
@@ -368,6 +364,54 @@ class Network extends BaseController
         return $res;
     }
 
+    public function newest_form(){
+        if($this->request->isPost()){
+           $res=$this->request->post();
+           return $this->newest_form_data($res);
+        }
+        $type=$this->request->get('type');
+        View::assign('type',$type);
+        return View::fetch();
+
+    }
+
+    protected function newest_form_data(&$res){
+        if(empty($res)) return '';
+        if($res['type']=='f'){
+            $start=$res['day_code']-1;
+            $end=$res['day_code'];
+            $parameter='start='.$start.'&end='.$end;
+            $url='https://datachart.500.com/ssq/history/newinc/history.php?'.$parameter;
+            $data['red1'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(2)')->html();
+            $data['red2'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(3)')->html();
+            $data['red3'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(4)')->html();
+            $data['red4'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(5)')->html();
+            $data['red5'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(6)')->html();
+            $data['red6'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(7)')->html();
+            $data['blue'] = QueryList::get($url)->find('#tdata > tr:nth-child(1) > td:nth-child(8)')->html();
+            $data['day_code']= $res['day_code'];
+            $data['create_time']= time();
+            return Db::name($this->fc)->insert($data);
+        }elseif($res['type']=='t'){
+//            $res=$this->newest_form_data_collection($res);
+            $dlt='dlt/';
+            $url='http://kaijiang.500.com/shtml/'.$dlt.$res['day_code'].'.shtml';
+            $data['red1'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(1)')->html();
+            $data['red2'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(2)')->html();
+            $data['red3'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(3)')->html();
+            $data['red4'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(4)')->html();
+            $data['red5'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(5)')->html();
+            $data['blue1'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(6)')->html();
+            $data['blue2'] = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(2) > td > table tr:nth-child(1) > td:nth-child(2) > div > ul > li:nth-child(7)')->html();
+            $day_code = QueryList::get($url)->find('body > div.wrap > div.kj_main01 > div.kj_main01_right > div.kjxq_box02 > div:nth-child(2) > table:nth-child(1) > tr:nth-child(1) > td > span > a')->text();
+            $data['day_code']= preg_replace('/\D/s', '', $day_code);
+            $data['create_time']= time();
+            return Db::name($this->tc)->insert($data);
+        }else{
+            return '';
+        }
+    }
+
     /**
      * @param $url
      * @return bool|string
@@ -380,7 +424,8 @@ class Network extends BaseController
         curl_setopt($curl, CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36");
         //Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
         //Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)
-        curl_setopt($curl, CURLOPT_REFERER, 'http://baidu.com/');
+//        curl_setopt($curl, CURLOPT_REFERER, 'http://baidu.com/');
+        curl_setopt($curl, CURLOPT_REFERER, $url);
         $resp =curl_exec($curl);
         curl_close($curl);
         return $resp;

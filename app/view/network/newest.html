@@ -1,10 +1,10 @@
 {include file="public/header"}
-<button type="button" class="layui-btn layui-btn-radius layui-btn-normal">流体按钮（最大化适应）</button>
+<button id="newest_form"  data-title="添加信息" type="button" class="layui-btn layui-btn-radius layui-btn-normal">采集最新</button>
 
 <div class="layui-row layui-col-space15">
     <div class="layui-col-md6">
         <div class="layui-panel">
-            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">最新号码</button>
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">最新号码{$data.day_code}期</button>
             <div style="padding: 30px;">
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red1}</button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red2}</button>
@@ -25,17 +25,6 @@
     </div>
     <div class="layui-col-md6">
         <div class="layui-panel">
-            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">近期推荐</button>
-            <div style="padding: 30px;">
-                <button type="button" id="red21" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-<div class="layui-row layui-col-space15">
-    <div class="layui-col-md6">
-        <div class="layui-panel">
             <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">近期出现次数较多的</button>
             <div style="padding: 30px;">
                 <button type="button" id="red1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
@@ -54,41 +43,30 @@
             </div>
         </div>
     </div>
-    <div class="layui-col-md6">
-        <div class="layui-panel">
-            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">近期推荐</button>
-            <div style="padding: 30px;">
-                <button type="button" id="red11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                <button type="button" id="red12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                <button type="button" id="red13" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                <button type="button" id="red14" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                <button type="button" id="red15" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                {if $type === 'f'}
-                <button type="button" id="red16" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
-                <button type="button" id="blue10" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
-                {elseif $type === 't'}
-                <button type="button" id="blue11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
-                <button type="button" id="blue12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
-                {/if}
-            </div>
-        </div>
-    </div>
+</div>
 
-</div>
-<div id="container" style="height: 500%"></div>
-{foreach $res as $key=>$val}
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>号码{$key}出现次数</legend>
-</fieldset>
-<div class="layui-progress" lay-showpercent="true">
-    <div class="layui-progress-bar layui-bg-red" lay-percent="{$val}/{$num}"></div>
-</div>
-<br>
-{/foreach}
+<div id="container_red1" style="height: 580px;width: 60%;position:absolute;"></div>
+<div id="container_blue1" style="height: 580px;width: 30%;position:absolute;left:1200px;"></div>
+
+
+
+<div id="container_red2" style="height: 580px;width: 60%;position:absolute;top:1000px;"></div>
+<div id="container_blue2" style="height: 580px;width: 30%;position:absolute;top:1000px;left:1200px;"></div>
+
 <input type="hidden" name="type" id="type_result"  value="{$type}">
 <script>
     layui.use('table', function(){
         var table = layui.table;
+    });
+    $("#newest_form").click(function(){
+        layer.open({
+            type: 2,
+            title: '增加数据',
+            area: ['700px', '450px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: 'newest_form?type={$type|default=1}'
+        });
     });
 
     $(document).ready(function(){
@@ -100,7 +78,7 @@
             dataType: "json",
             success: function(data){
                 var jsonObj = JSON.parse(data);
-                console.log(jsonObj);
+                // console.log(jsonObj);
                 $('#red1').text(jsonObj.red1);
                 $('#red2').text(jsonObj.red2);
                 $('#red3').text(jsonObj.red3);
@@ -114,24 +92,123 @@
             }
         });
 
-        var myChart = echarts.init(document.getElementById('container'));
+        var myChart = echarts.init(document.getElementById('container_red1'));
         option = {
+            color:['red'],
             xAxis: {
                 type: 'category',
-                data: {$res_key}
+                data: {$red_key}
                 // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: {$res_val},
+                data: {$red_val},
                 type: 'line'
             }]
         };
         myChart.setOption(option, true);
 
+        var myChart1 = echarts.init(document.getElementById('container_blue1'));
+        option = {
+            color:['blue'],
+            xAxis: {
+                type: 'category',
+                data: {$blue_key}
+                // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: {$blue_val},
+                type: 'line'
+            }]
+        };
+        myChart1.setOption(option, true);
+
+        var myChart2 = echarts.init(document.getElementById('container_red2'));
+        option = {
+            color:['red'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: {$red_key},
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '出现次数',
+                    type: 'bar',
+                    barWidth: '20',
+                    data: {$red_val}
+                }
+            ]
+        };
+        myChart2.setOption(option, true);
+
+        var myChart3 = echarts.init(document.getElementById('container_blue2'));
+        option = {
+            color:['blue'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: {$blue_key},
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '出现次数',
+                    type: 'bar',
+                    barWidth: '20',
+                    data: {$blue_val}
+                }
+            ]
+        };
+        myChart3.setOption(option, true);
     });
+
 </script>
 <script>
 
