@@ -13,6 +13,7 @@ use think\facade\View;
 use think\facade\Db;
 use QL\QueryList;
 use think\cache\driver\Redis;
+use think\response\Json;
 
 class Network extends BaseController
 {
@@ -217,35 +218,43 @@ class Network extends BaseController
         $where['is_deleted']=0;
         $where['type']=0;
         $year=date('y');
-        if($this->request->get('type')==='f') {
+        if($this->request->get('type')=='f') {
             $data = Db::name($this->fc)->where($where)->order('day_code desc')->find();
             $res=[];
-        }elseif($this->request->get('type')==='t'){
+            $count=0;
+        }elseif($this->request->get('type')=='t'){
             $tc=Db::name($this->tc);
             $data = $tc->where($where)->order('day_code desc')->find();
-            $res1=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red1');
-            $res2=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red2');
-            $res3=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red3');
-            $res4=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red4');
-            $res5=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red5');
-            $res6=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('blue1');
-            $res7=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('blue2');
-            $res['red1']=$this->newest_result_data($res1,true);
-            $res['red2']=$this->newest_result_data($res2,true);
-            $res['red3']=$this->newest_result_data($res3,true);
-            $res['red4']=$this->newest_result_data($res4,true);
-            $res['red5']=$this->newest_result_data($res5,true);
-            $res['blue1']=$this->newest_result_data($res6,true);
-            $res['blue2']=$this->newest_result_data($res7,true);
-//            halt($res);
+            $str='red1,red2,red3,red4,red5';
+            $res=$tc->field($str)->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->select();
+            $result = [];
+            $count=count($res);
+            array_walk_recursive($res, function($value) use (&$result) {
+                array_push($result, $value);
+            });
+            $res=array_count_values($result);
+//            arsort($res);
+            ksort($res);
+            $num=count($res);
+            $res_key=array_keys($res);
+            $res_val=array_values($res);
+//            halt(json_encode($res_val));
+            View::assign('res_key',json_encode($res_key));
+            View::assign('res_val',json_encode($res_val));
+//            View::assign('res_key',$res_key);
         }else{
             $data=[];
             $res=[];
+            $count=0;
         }
+
         if(empty($data)) exit;
         if(empty($res)) exit;
+//        halt(2);
         View::assign('data',$data);
         View::assign('res',$res);
+        View::assign('count',$count);
+        View::assign('num',$num);
         View::assign('title',empty($title)?$this->title:$title);
         View::assign('type', $this->request->get('type'));
         return View::fetch();
@@ -387,16 +396,22 @@ class Network extends BaseController
     }
 
     public function count_all_numbers(){
-        $tc=Db::name($this->tc);
-        $year=date('y');
-        $str='red1,red2,red3,red4,red5,blue1,blue2';
-        $res=$tc->field($str)->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->select();
-        $result = [];
-        array_walk_recursive($res, function($value) use (&$result) {
-            array_push($result, $value);
-        });
-        $res=array_count_values($result);
-        $res['a']=1;
+//        $tc=Db::name($this->tc);
+//        $data = $tc->where($where)->order('day_code desc')->find();
+//        $res1=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red1');
+//        $res2=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red2');
+//        $res3=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red3');
+//        $res4=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red4');
+//        $res5=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('red5');
+//        $res6=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('blue1');
+//        $res7=$tc->where('day_code','>',intval($year.'000'))->where('day_code','<',intval($year.'333'))->column('blue2');
+//        $res['red1']=$this->newest_result_data($res1,true);
+//        $res['red2']=$this->newest_result_data($res2,true);
+//        $res['red3']=$this->newest_result_data($res3,true);
+//        $res['red4']=$this->newest_result_data($res4,true);
+//        $res['red5']=$this->newest_result_data($res5,true);
+//        $res['blue1']=$this->newest_result_data($res6,true);
+//        $res['blue2']=$this->newest_result_data($res7,true);
     }
 
 }
