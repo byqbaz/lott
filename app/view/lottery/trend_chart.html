@@ -1,0 +1,73 @@
+{include file="public/header"}
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">最新生成</button>
+            <div style="padding: 30px;">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red1}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red2}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red3}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red4}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red5}</button>
+                {if $type === 'f'}
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.red6}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$data.blue}</button>
+                {elseif $type === 't'}
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$data.blue1}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$data.blue2}</button>
+                {/if}
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">生成次数最多的</button>
+            <div style="padding: 30px;">
+                <button type="button" id="red1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red3" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red4" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="red5" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                {if $type === 'f'}
+                <button type="button" id="red6" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="blue" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {elseif $type === 't'}
+                <button type="button" id="blue1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="blue2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="type" id="type_result"  value="{$type}">
+</div>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+    });
+
+    $(document).ready(function(){
+        var res = $('#type_result').val();
+        $.ajax({
+            type: "POST",
+            url: "{:url('Lottery/trend_chart_result')}",
+            data: {res:res},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                console.log(jsonObj);
+                $('#red1').text(jsonObj.red1);
+                $('#red2').text(jsonObj.red2);
+                $('#red3').text(jsonObj.red3);
+                $('#red4').text(jsonObj.red4);
+                $('#red5').text(jsonObj.red5);
+                $('#red6').text(jsonObj.red6);
+                $('#blue').text(jsonObj.blue);
+                $('#blue1').text(jsonObj.blue1);
+                $('#blue2').text(jsonObj.blue2);
+
+            }
+        });
+    });
+</script>

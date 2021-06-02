@@ -1,0 +1,148 @@
+{include file="public/header"}
+
+<div class="layui-bg-gray" style="padding: 30px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-panel" style="width: 1600px">
+                <div style="padding: 50px 30px;">
+
+                    <div class="layui-btn-container">
+
+                        <button type="button" class="layui-btn layui-btn-danger" id="red11"></button>
+                        <button type="button" class="layui-btn layui-btn-danger" id="red12"></button>
+                        <button type="button" class="layui-btn layui-btn-danger" id="red13"></button>
+                        <button type="button" class="layui-btn layui-btn-danger" id="red14"></button>
+                        <button type="button" class="layui-btn layui-btn-danger" id="red15"></button>
+                        {if $type === 'f'}
+                        <button type="button" class="layui-btn layui-btn-danger" id="red16"></button>
+                        <button type="button" class="layui-btn layui-btn-normal" id="blue10"></button>
+                        <button type="button" id="fc" name="generate_fc" class="lott layui-btn layui-btn-radius">生成</button>
+                        {elseif $type === 't'}
+                        <button type="button" class="layui-btn layui-btn-normal" id="blue11"></button>
+                        <button type="button" class="layui-btn layui-btn-normal" id="blue12"></button>
+                        <button type="button" id="tc" name="generate_tc" class="lott layui-btn layui-btn-radius">生成</button>
+                        {/if}
+                        <a href="{:url('newest')}?type={$type}" class="layui-btn layui-btn-warm layui-btn-radius">返回最新</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<table class="layui-table" lay-data="{ url:'/Lottery/more_past_data.html?type={$type|default=0}&number=100', page:false, id:'test2', skin: 'row', limit: 300, even: true, parseData: function(res){ //res 即为原始返回的数据
+                var res=$.parseJSON(res);
+                <!--console.log(res.data);-->
+                return {
+                    'code':0, //解析接口状态
+                    'msg':'', //解析提示文本
+                    'count': 200, //解析数据长度
+                    'data': res.data//解析数据列表
+                };
+}}">
+    <thead>
+    <tr>
+        <th lay-data="{ width:80, sort: true,templet: '#xuhao'}">序号</th>
+        <th lay-data="{field:'day_code', width:150, templet: '#usernameTpl'}">期号</th>
+        <th lay-data="{field:'red1', width:120,style:'background-color: #FA8072; ',}">1</th>
+        <th lay-data="{field:'red2', width:120,style:'background-color: #FA8072; ',}">2</th>
+        <th lay-data="{field:'red3', width:120,style:'background-color: #FA8072; ',}">3</th>
+        <th lay-data="{field:'red4', width:120,style:'background-color: #FA8072; ',}">4</th>
+        <th lay-data="{field:'red5', width:120,style:'background-color: #FA8072; ',}">5</th>
+        {if $type === 'f'}
+        <th lay-data="{field:'red6', width:120,style:'background-color: #FA8072; ',}">6</th>
+        <th lay-data="{field:'blue', width:120,style:'background-color: #40E0D0; ',}">7</th>
+        {elseif $type === 't'}
+        <th lay-data="{field:'blue1', width:120,style:'background-color: #40E0D0; ',}">6</th>
+        <th lay-data="{field:'blue2', width:120,style:'background-color: #40E0D0; ',}">7</th>
+        {/if}
+
+        <th lay-data="{field:'type', width:80，templet: '#isType'}">类型</th>
+        <th lay-data="{field:'update_time'}">创建时间</th>
+        <th lay-data="{field:'is_deleted', width:80, sort: true, style:'background-color: #eee;',templet: '#is_deleted'}">状态</th>
+        <!--<th lay-data="{field:'score', width:80, sort: true}">操作</th>-->
+    </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="usernameTpl">
+    <a href="/?table-demo-id={{d.id}}" class="layui-table-link" target="_blank">{{ d.day_code }}</a>
+</script>
+
+<script type="text/html" id="is_deleted">
+    {{#  if(d.is_deleted === 0){ }}
+    <span style="color: #009688;">正常</span>
+    {{#  } else { }}
+    <span style="color: #F581B1;">异常</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="isType">
+    {{#  if(d.is_deleted === 0){ }}
+    <span style="color: #009688;">正常</span>
+    {{#  } else { }}
+    <span style="color: #F581B1;">异常</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="xuhao">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+
+<script type="text/html" id="barDemo1">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">工具性按钮</a>
+</script>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+    });
+
+    $('.lott').click(function(){
+        var url = $(this).attr("name");
+        console.log(url);
+        $.ajax({
+            type: "POST",
+            url: "{:url('"+url+"')}",
+            data: {name:url},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#red11').text(jsonObj.red[0]);
+                $('#red12').text(jsonObj.red[1]);
+                $('#red13').text(jsonObj.red[2]);
+                $('#red14').text(jsonObj.red[3]);
+                $('#red15').text(jsonObj.red[4]);
+                $('#red16').text(jsonObj.red[5]);
+                $('#blue10').text(jsonObj.blue);
+                $('#blue11').text(jsonObj.blue[0]);
+                $('#blue12').text(jsonObj.blue[1]);
+            }
+        });
+    });
+
+    // $(document).ready(function(){
+    //     var res = $('#type_result').val();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "{:url('Lottery/more_past_result')}",
+    //         data: {res:res},
+    //         dataType: "json",
+    //         success: function(data){
+    //             var jsonObj = JSON.parse(data);
+    //             console.log(jsonObj);
+    //             $('#red1').text(jsonObj.red1);
+    //             $('#red2').text(jsonObj.red2);
+    //             $('#red3').text(jsonObj.red3);
+    //             $('#red4').text(jsonObj.red4);
+    //             $('#red5').text(jsonObj.red5);
+    //             $('#red6').text(jsonObj.red6);
+    //             $('#blue').text(jsonObj.blue);
+    //             $('#blue1').text(jsonObj.blue1);
+    //             $('#blue2').text(jsonObj.blue2);
+    //
+    //         }
+    //     });
+    // });
+</script>

@@ -1,28 +1,266 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!--引入本地-->
-    <script src="static/layui/layui.js"></script>
-    <link rel="stylesheet" href="static/layui/css/layui.css">
-    <!--引入线上-->
-    <!--<link rel="stylesheet" href="//unpkg.com/layui@2.6.5/dist/css/layui.css">-->
-    <!--<script src="//unpkg.com/layui@2.6.5/dist/layui.js"></script>-->
-</head>
-<body>
-<button type="button" class="layui-btn layui-bg-red">1</button>
-<a href="{:url('Lottery/index')}" class="layui-btn">一个可跳转的按钮</a>
-<div class="layui-row layui-col-space10">
-    <div class="layui-col-md4">
-        1/3
-    </div>
-    <div class="layui-col-md4">
-        1/3
-    </div>
-    <div class="layui-col-md4">
-        1/3
+{include file="public/header"}
+
+<div class="layui-bg-gray" style="padding: 30px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-panel" style="width: 1600px">
+                <div style="padding: 50px 30px;">
+
+                    <div class="layui-btn-container">
+                        <a href="/" class="layui-btn layui-bg-red">刷新当前页</a>
+                        <a href="{:url('Lottery/index')}" class="layui-btn">随机生成</a>
+                        <a href="{:url('Network/index')}" class="layui-btn">互联网采集</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-</body>
-</html>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">大乐透</button>
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">第{$tc.day_code|default=000}期</button>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">大乐透最新</button>
+
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc.red1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc.red2|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc.red3|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc.red4|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc.red5|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$tc.blue1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$tc.blue2|default=0}</button>
+            </div>
+
+
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">随机大乐透</button>
+
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc1.red1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc1.red2|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc1.red3|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc1.red4|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$tc1.red5|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$tc1.blue1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$tc1.blue2|default=0}</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">双色球</button>
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">第{$fc.day_code|default=000}期</button>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">双色球最新</button>
+
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc.red1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc.red2|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc.red3|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc.red4|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc.red5|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$fc.red6|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$fc.blue|default=0}</button>
+            </div>
+
+
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">随机双色球</button>
+
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc1.red1|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc1.red2|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc1.red3|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc1.red4|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">{$fc1.red5|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$fc1.red6|default=0}</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">{$fc1.blue|default=0}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">大乐透出现次数最多</button>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">采集</button>
+
+                <button type="button" id="dlt1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt3" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt4" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt5" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt6" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="dlt7" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">随机</button>
+
+                <button type="button" id="dlt11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt13" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt14" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt15" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt16" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="dlt17" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">整合</button>
+
+                <button type="button" id="dlt21" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt22" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt23" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt24" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt25" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="dlt26" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+                <button type="button" id="dlt27" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <button type="button" class="layui-btn layui-btn-lg layui-btn-primary layui-btn-radius">双色球出现次数最多</button>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">采集</button>
+
+                <button type="button" id="ssq1" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq2" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq3" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq4" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq5" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq6" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq7" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">随机</button>
+
+                <button type="button" id="ssq11" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq12" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq13" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq14" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq15" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq16" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq17" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+            <div style="padding: 30px;">
+                <button type="button"  class="lott layui-btn layui-btn-radius">整合</button>
+
+                <button type="button" id="ssq21" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq22" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq23" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq24" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq25" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq26" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">0</button>
+                <button type="button" id="ssq27" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">0</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'dlt'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#dlt1').text(jsonObj.red1);
+                $('#dlt2').text(jsonObj.red2);
+                $('#dlt3').text(jsonObj.red3);
+                $('#dlt4').text(jsonObj.red4);
+                $('#dlt5').text(jsonObj.red5);
+                $('#dlt6').text(jsonObj.blue1);
+                $('#dlt7').text(jsonObj.blue2);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'ssq'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#ssq1').text(jsonObj.red1);
+                $('#ssq2').text(jsonObj.red2);
+                $('#ssq3').text(jsonObj.red3);
+                $('#ssq4').text(jsonObj.red4);
+                $('#ssq5').text(jsonObj.red5);
+                $('#ssq6').text(jsonObj.red6);
+                $('#ssq7').text(jsonObj.blue);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'dlt1'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#dlt11').text(jsonObj.red1);
+                $('#dlt12').text(jsonObj.red2);
+                $('#dlt13').text(jsonObj.red3);
+                $('#dlt14').text(jsonObj.red4);
+                $('#dlt15').text(jsonObj.red5);
+                $('#dlt16').text(jsonObj.blue1);
+                $('#dlt17').text(jsonObj.blue2);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'ssq1'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#ssq11').text(jsonObj.red1);
+                $('#ssq12').text(jsonObj.red2);
+                $('#ssq13').text(jsonObj.red3);
+                $('#ssq14').text(jsonObj.red4);
+                $('#ssq15').text(jsonObj.red5);
+                $('#ssq16').text(jsonObj.red6);
+                $('#ssq17').text(jsonObj.blue);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'dlt2'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#dlt21').text(jsonObj.red1);
+                $('#dlt22').text(jsonObj.red2);
+                $('#dlt23').text(jsonObj.red3);
+                $('#dlt24').text(jsonObj.red4);
+                $('#dlt25').text(jsonObj.red5);
+                $('#dlt26').text(jsonObj.blue1);
+                $('#dlt27').text(jsonObj.blue2);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{:url('_index_data')}",
+            data: {res:'ssq2'},
+            dataType: "json",
+            success: function(data){
+                var jsonObj = JSON.parse(data);
+                $('#ssq21').text(jsonObj.red1);
+                $('#ssq22').text(jsonObj.red2);
+                $('#ssq23').text(jsonObj.red3);
+                $('#ssq24').text(jsonObj.red4);
+                $('#ssq25').text(jsonObj.red5);
+                $('#ssq26').text(jsonObj.red6);
+                $('#ssq27').text(jsonObj.blue);
+            }
+        });
+    });
+</script>

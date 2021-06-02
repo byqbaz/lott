@@ -1,0 +1,62 @@
+{include file="public/header_form"}
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">单个采集</li>
+        <li>批量采集</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" action="{:request()->url()}" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="type" value="f" title="双色球" {if $type=="f"} checked {/if} >
+                        <input type="radio" name="type" value="t" title="大乐透" {if $type=="t"} checked {/if} >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请输入期号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="day_code" required  lay-verify="required" placeholder="请输入期号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" action="{:url('batch_capture')}" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="type" value="f" title="双色球" {if $type=="f"} checked {/if} >
+                        <input type="radio" name="type" value="t" title="大乐透" {if $type=="t"} checked {/if} >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请输入起始期号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="start_code" required  lay-verify="required" placeholder="请输入起始期号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请输入结束期号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="end_code" required  lay-verify="required" placeholder="请输入结束期号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
